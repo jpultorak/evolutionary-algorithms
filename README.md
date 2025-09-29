@@ -1,1 +1,2 @@
- # University of Wroclaw 2025/2026 **Evolutionary algorithms** course
+# 2025/2026 **Evolutionary algorithms** class
+## University of Wroclaw 
