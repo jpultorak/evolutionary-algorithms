@@ -1,12 +1,7 @@
-from pathlib import Path
-
 from list0.algorithms.hill_climb import hill_climb
 from list0.algorithms.random_tours import random_tour, weighted_random_tour
 from list0.eval import generate
 from list0.read_datasets import read_graph
-
-DATASETS = Path(__file__).resolve().parents[2] / "datasets"
-
 
 if __name__ == "__main__":
     DATASET = "berlin52"
@@ -21,16 +16,23 @@ if __name__ == "__main__":
 
     # EXERCISE 2
 
-    res0 = generate(g=g, generate_tour=random_tour, opt_cost=OPT_PATH_LENGTH, n=100)
-    print(res0)
+    bins0, best0, worst0 = generate(
+        g=g, generate_tour=random_tour, opt_cost=OPT_PATH_LENGTH, n=100
+    )
+    print(bins0)
+    print(f"Best: {best0}\nWorst:{worst0}")
 
-    res1 = generate(
+    bins1, best1, worst1 = generate(
         g=g, generate_tour=weighted_random_tour, opt_cost=OPT_PATH_LENGTH, n=100
     )
-    print(res1)
+    print(bins1)
+    print(f"Best: {best1}\nWorst:{worst1}")
 
     def hill_climb_m(g):
-        return hill_climb(g, m=2)[0]
+        return hill_climb(g, m=3)[0]
 
-    res2 = generate(g, generate_tour=hill_climb_m, opt_cost=OPT_PATH_LENGTH, n=1)
-    print(res2)
+    bins2, best2, worst2 = generate(
+        g, generate_tour=hill_climb_m, opt_cost=OPT_PATH_LENGTH, n=10
+    )
+    print(bins2)
+    print(f"Best: {best2}\nWorst:{worst2}")
