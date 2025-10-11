@@ -4,7 +4,7 @@ from collections import Counter
 from list0.utils import path_cost
 
 
-def gen_random(g, generate_tour, opt_cost, n=100):
+def generate(g, generate_tour, opt_cost, n=100):
     bins = Counter()
 
     for _ in range(n):
