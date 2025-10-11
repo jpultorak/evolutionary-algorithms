@@ -17,7 +17,7 @@ def derangements(k: int):
     )
 
 
-def best_neighbour_hamming(p, cost_fn, m):
+def best_neighbour_hamming(p, cost_fn, m, first_choice=False):
     """
     Returns best permutation q with hamming distance to p <= m
     """
@@ -40,27 +40,34 @@ def best_neighbour_hamming(p, cost_fn, m):
                 if cost_q < best_cost:
                     best_cost, best_q = cost_q, q
                     found_better = True
+                    if first_choice:
+                        return found_better, best_q, best_cost
 
     return found_better, best_q, best_cost
 
 
-def hill_climb(g, m):
+def hill_climb(g, m, first_choice=False):
     if m < 2 or m >= g.number_of_nodes():
         raise ValueError("Must be 2 <= m <n")
 
     def cost_fn(p):
         return path_cost(g, p, cyclic=True)
 
+    costs = []
+
     p = list(g.nodes)
     random.shuffle(p)
 
     cost = cost_fn(p)
+    costs.append(cost)
+
     while True:
         found_better, best_q, best_cost = best_neighbour_hamming(
-            p, cost_fn=cost_fn, m=m
+            p, cost_fn=cost_fn, m=m, first_choice=first_choice
         )
         if not found_better:
-            return p, cost
+            return p, costs
+        costs.append(best_cost)
         p, cost = best_q, best_cost
 
 
