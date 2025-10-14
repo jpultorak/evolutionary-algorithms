@@ -12,7 +12,7 @@ def weighted_random_path(dist: np.ndarray) -> np.ndarray:
 
     n = len(dist)
     nodes = np.arange(n)
-    tour = np.empty(n, dtype=np.int64)
+    tour = np.empty(n, dtype=np.int32)
     visited = np.zeros(n, dtype=np.bool)
 
     v = rng.integers(low=0, high=n)

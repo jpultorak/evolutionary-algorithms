@@ -1,11 +1,13 @@
+from timeit import default_timer as timer
+
 from list0.algorithms.random_tours import random_path, weighted_random_path
-from list0.eval import generate
+from list0.eval import generate, generate_hc
 from list0.read_datasets import read_dataset
 from list0.visualization import draw_coords_tour
 
 DATASET = "berlin52"
 OPT_PATH_LENGTH = 7542
-HC_N, HC_M = 10, 2
+HC_N, HC_M = 1, 2
 
 
 def random():
@@ -26,18 +28,18 @@ def weighted_random():
     print()
 
 
-# def hc():
-#     hc_start = timer()
-#     bins2, best2, worst2, iterations = generate_hc(
-#         g, m=HC_M, first_choice=False, opt_cost=OPT_PATH_LENGTH, n=HC_N
-#     )
-#     hc_end = timer()
-#
-#     print(f"Hill climb N={HC_N}, M={HC_M} execution time {hc_end - hc_start}")
-#     print(f"Iterations {iterations}")
-#     print(bins2)
-#     print(f"Best: {best2}\nWorst:{worst2}")
-#     print()
+def hc():
+    hc_start = timer()
+    bins, best, worst, iterations = generate_hc(
+        dist=dist, m=HC_M, first_choice=False, opt_cost=OPT_PATH_LENGTH, n=HC_N
+    )
+    hc_end = timer()
+
+    print(f"Hill climb N={HC_N}, M={HC_M} execution time {hc_end - hc_start}")
+    print(f"Iterations {iterations}")
+    print(bins)
+    print(f"Best: {best}\nWorst:{worst}")
+    print()
 
 
 # def hc_iterations():
@@ -66,11 +68,11 @@ if __name__ == "__main__":
     print(f"TSP for {DATASET}\nLength of the optimal cycle: {OPT_PATH_LENGTH}\n")
     nodes, coords, dist, opt_path = read_dataset(DATASET)
 
-    draw_tours()
+    # draw_tours()
 
-    random()
-    weighted_random()
+    # random()
+    # weighted_random()
 
-    # hc()
-    #
+    hc()
+
     # hc_iterations()

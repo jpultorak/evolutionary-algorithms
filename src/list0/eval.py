@@ -1,7 +1,10 @@
 import math
 from collections import Counter
 
+import numpy as np
+
 from list0.algorithms.hill_climb import hill_climb
+from list0.algorithms.hill_climb2 import hill_climb2
 from list0.utils import tour_cost
 
 
@@ -23,7 +26,7 @@ def generate(dist, generate_path, opt_cost, n=100):
     return sorted(bins.items()), best, worst
 
 
-def generate_hc(g, opt_cost, m=2, first_choice=False, n=100):
+def generate_hc(dist: np.ndarray, opt_cost, m=2, first_choice=False, n=100):
     """
     Do n runs of hill climb algorithm and return results sorted in bins, best cost,
      worst cost, and total iteration
@@ -33,7 +36,10 @@ def generate_hc(g, opt_cost, m=2, first_choice=False, n=100):
     worst, best = -math.inf, math.inf
     total_iterations = []
     for _ in range(n):
-        _, costs = hill_climb(g, m=m, first_choice=first_choice)
+        if m == 2:
+            _, costs = hill_climb2(dist=dist, first_choice=first_choice)
+        else:
+            _, costs = hill_climb(dist, m, first_choice=first_choice)
         cost = costs[-1]
         total_iterations.append(len(costs))
 
