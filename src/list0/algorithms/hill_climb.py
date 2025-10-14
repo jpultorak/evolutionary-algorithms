@@ -2,7 +2,7 @@ import itertools
 import random
 from functools import cache
 
-from list0.utils import path_cost
+from list0.utils import tour_cost
 
 
 @cache
@@ -51,7 +51,7 @@ def hill_climb(g, m, first_choice=False):
         raise ValueError("Must be 2 <= m <n")
 
     def cost_fn(p):
-        return path_cost(g, p, cyclic=True)
+        return tour_cost(g, p, cyclic=True)
 
     costs = []
 

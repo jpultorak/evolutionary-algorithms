@@ -1,16 +1,12 @@
 import matplotlib.pyplot as plt
-import networkx as nx
-
-from list0.utils import path_edges
+import numpy as np
 
 
-def draw(g, paths):
-    plt.figure(figsize=(15, 15))
-    pos = {v: g.nodes[v]["coord"] for v in g.nodes}
-
-    nx.draw_networkx_nodes(g, pos, node_size=60)
-
-    for path in paths:
-        nx.draw_networkx_edges(g, pos, edgelist=path_edges(path, cyclic=True), width=3)
-
+def draw_coords_tour(coords: np.ndarray, tours: list[np.ndarray]):
+    plt.figure(figsize=(10, 10))
+    x, y = coords[:, 0], coords[:, 1]
+    plt.scatter(x, y)
+    for tour in tours:
+        cycle = np.append(tour, tour[0])
+        plt.plot(x[cycle], y[cycle], linewidth=2)
     plt.show()

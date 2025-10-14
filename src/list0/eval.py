@@ -2,16 +2,16 @@ import math
 from collections import Counter
 
 from list0.algorithms.hill_climb import hill_climb
-from list0.utils import path_cost
+from list0.utils import tour_cost
 
 
-def generate(g, generate_tour, opt_cost, n=100):
+def generate(dist, generate_path, opt_cost, n=100):
     bins = Counter()
 
     worst, best = -math.inf, math.inf
     for _ in range(n):
-        tour = generate_tour(g)
-        cost = path_cost(g, path=tour, cyclic=True)
+        path = generate_path(dist)
+        cost = tour_cost(dist=dist, path=path)
 
         best = min(best, cost)
         worst = max(worst, cost)

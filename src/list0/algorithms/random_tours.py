@@ -1,31 +1,33 @@
-import random
+import numpy as np
 
 
-def random_tour(g, start=1):
-    nodes = list(g.nodes)
-    nodes.remove(start)
-    random.shuffle(nodes)
-
-    return [start] + nodes
+def random_path(dist: np.ndarray):
+    n = len(dist)
+    rng = np.random.default_rng()
+    return rng.permutation(n)
 
 
-def weighted_random_tour(g, start=1):
-    nodes = list(g.nodes)
-    tour = [start]
+def weighted_random_path(dist: np.ndarray) -> np.ndarray:
+    rng = np.random.default_rng()
 
-    visited = {start}
+    n = len(dist)
+    nodes = np.arange(n)
+    tour = np.empty(n, dtype=np.int64)
+    visited = np.zeros(n, dtype=np.bool)
 
-    v = start
-    while len(visited) < len(nodes):
-        aval_neighbours = [u for u in g.neighbors(v) if u not in visited]
+    v = rng.integers(low=0, high=n)
+    visited[v] = True
+    tour[0] = v
+    total = 1
 
-        if not aval_neighbours:
-            raise RuntimeError("Incomplete graph")
+    while total < n:
+        aval = nodes[~visited]
+        p = 1.0 / dist[v, aval]
+        p = p / np.sum(p, dtype=float)
+        v = rng.choice(nodes[aval], p=p)
 
-        weights = [1 / g[v][u]["weight"] for u in aval_neighbours]
-        v = random.choices(aval_neighbours, weights=weights)[0]
-
-        tour.append(v)
-        visited.add(v)
+        tour[total] = v
+        visited[v] = True
+        total += 1
 
     return tour
