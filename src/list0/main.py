@@ -50,7 +50,7 @@ def hc_iterations():
     _, costs = hill_climb(g, m=HC_M, first_choice=False)
     print(f"COST | DIFF\n0: {costs[0]}, 0")
     for i in range(1, len(costs)):
-        print(f"1: {costs[i]}, {costs[i - 1] - costs[i]}")
+        print(f"{i}: {costs[i]}, {costs[i - 1] - costs[i]}")
 
 
 def draw_tours(g):
