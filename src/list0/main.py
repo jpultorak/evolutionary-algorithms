@@ -7,7 +7,7 @@ from list0.visualization import draw_coords_tour
 
 DATASET = "berlin52"
 OPT_PATH_LENGTH = 7542
-HC_N, HC_M = 1, 2
+HC_N, HC_M, HC_FIRST_CHOICE = 1000, 2, True
 
 
 def random():
@@ -31,7 +31,11 @@ def weighted_random():
 def hc():
     hc_start = timer()
     bins, best, worst, iterations = generate_hc(
-        dist=dist, m=HC_M, first_choice=False, opt_cost=OPT_PATH_LENGTH, n=HC_N
+        dist=dist,
+        m=HC_M,
+        first_choice=HC_FIRST_CHOICE,
+        opt_cost=OPT_PATH_LENGTH,
+        n=HC_N,
     )
     hc_end = timer()
 
