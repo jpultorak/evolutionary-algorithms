@@ -81,9 +81,10 @@ def hc_iterations():
     How does the cost change in consecutive iterations?
     """
     _, costs = hill_climb2(dist=dist, first_choice=HC_FIRST_CHOICE)
-    print(f"COST | DIFF\n0: {costs[0]}, 0")
-    for i in range(1, len(costs)):
-        print(f"{i}: {costs[i]}, {costs[i - 1] - costs[i]}")
+    plot_costs(
+        costs,
+        title=f"Hill climb cost N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}",
+    )
 
 
 def draw_tours():
@@ -121,6 +122,18 @@ def plot_iterations(iterations, title):
     plt.show()
 
 
+def plot_costs(costs, title):
+    x = np.arange(len(costs))
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(x, costs, marker=".")
+
+    ax.set_title(title)
+    ax.set_xlabel("iteration")
+    ax.set_ylabel("cost")
+    ax.grid(True, linestyle="--", alpha=0.4)
+    plt.show()
+
+
 if __name__ == "__main__":
     print(f"TSP for {DATASET}\nLength of the optimal cycle: {OPT_PATH_LENGTH}\n")
     nodes, coords, dist, opt_path = read_dataset(DATASET)
@@ -130,6 +143,6 @@ if __name__ == "__main__":
     # random()
     # weighted_random()
 
-    hc()
+    # hc()
 
-    # hc_iterations()
+    hc_iterations()
