@@ -7,22 +7,33 @@ from list0.visualization import draw_coords_tour
 
 DATASET = "berlin52"
 OPT_PATH_LENGTH = 7542
-HC_N, HC_M, HC_FIRST_CHOICE = 1000, 2, True
+HC_N, HC_M, HC_FIRST_CHOICE = 10, 2, True
+RANDOM_N = 100
 
 
 def random():
+    start = timer()
     bins, best, worst = generate(
-        dist=dist, generate_path=random_path, opt_cost=OPT_PATH_LENGTH, n=100
+        dist=dist, generate_path=random_path, opt_cost=OPT_PATH_LENGTH, n=RANDOM_N
     )
+    end = timer()
+
+    print(f"Uniform random tours, N={RANDOM_N}")
+    print(f"Execution time: {end - start}")
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
     print()
 
 
 def weighted_random():
+    start = timer()
     bins, best, worst = generate(
         dist=dist, generate_path=weighted_random_path, opt_cost=OPT_PATH_LENGTH, n=100
     )
+    end = timer()
+
+    print(f"Weighted random tours, N={RANDOM_N}")
+    print(f"Execution time: {end - start}")
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
     print()
@@ -39,7 +50,8 @@ def hc():
     )
     hc_end = timer()
 
-    print(f"Hill climb N={HC_N}, M={HC_M} execution time {hc_end - hc_start}")
+    print(f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE})")
+    print(f"Execution time: {hc_end - hc_start}")
     print(f"Iterations {iterations}")
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
@@ -74,8 +86,8 @@ if __name__ == "__main__":
 
     # draw_tours()
 
-    # random()
-    # weighted_random()
+    random()
+    weighted_random()
 
     hc()
 
