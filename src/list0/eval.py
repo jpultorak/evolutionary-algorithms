@@ -35,6 +35,7 @@ def generate_hc(dist: np.ndarray, opt_cost, m=2, first_choice=False, n=100):
 
     worst, best = -math.inf, math.inf
     total_iterations = []
+    final_costs = []
     for _ in range(n):
         if m == 2:
             _, costs = hill_climb2(dist=dist, first_choice=first_choice)
@@ -42,6 +43,7 @@ def generate_hc(dist: np.ndarray, opt_cost, m=2, first_choice=False, n=100):
             _, costs = hill_climb(dist, m, first_choice=first_choice)
         cost = costs[-1]
         total_iterations.append(len(costs))
+        final_costs.append(cost)
 
         best = min(best, cost)
         worst = max(worst, cost)
@@ -50,4 +52,4 @@ def generate_hc(dist: np.ndarray, opt_cost, m=2, first_choice=False, n=100):
         bucket = 10 * math.floor(over / 10.0)
         bins[bucket] += 1
 
-    return sorted(bins.items()), best, worst, total_iterations
+    return sorted(bins.items()), best, worst, total_iterations, final_costs

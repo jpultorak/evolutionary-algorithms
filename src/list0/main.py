@@ -52,7 +52,7 @@ def weighted_random():
 
 def hc():
     hc_start = timer()
-    bins, best, worst, iterations = generate_hc(
+    bins, best, worst, iterations, costs = generate_hc(
         dist=dist,
         m=HC_M,
         first_choice=HC_FIRST_CHOICE,
@@ -63,12 +63,17 @@ def hc():
 
     print(f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}")
     print(f"Execution time: {hc_end - hc_start}")
-    print(f"Iterations {iterations}")
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
     print()
 
     plot_bins(bins, f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}")
+    plot_iters_vs_cost(
+        iterations=iterations,
+        costs=costs,
+        title="Cost vs iterations; "
+        + f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}",
+    )
     plot_iterations(
         iterations,
         title=f"Iterations for hill climb N={HC_N},"
@@ -76,10 +81,7 @@ def hc():
     )
 
 
-def hc_iterations():
-    """
-    How does the cost change in consecutive iterations?
-    """
+def hc_cost_for_each_iteration():
     _, costs = hill_climb2(dist=dist, first_choice=HC_FIRST_CHOICE)
     plot_costs(
         costs,
@@ -134,6 +136,19 @@ def plot_costs(costs, title):
     plt.show()
 
 
+def plot_iters_vs_cost(iterations, costs, title):
+    iters = np.asarray(iterations, dtype=float)
+    costs = np.asarray(costs, dtype=float)
+
+    plt.figure(figsize=(10, 5))
+    plt.scatter(iters, costs, s=5)
+    plt.title(title)
+    plt.xlabel("iterations to stop")
+    plt.ylabel("final tour cost")
+    plt.grid(True, linestyle="--", alpha=0.4)
+    plt.show()
+
+
 if __name__ == "__main__":
     print(f"TSP for {DATASET}\nLength of the optimal cycle: {OPT_PATH_LENGTH}\n")
     nodes, coords, dist, opt_path = read_dataset(DATASET)
@@ -143,6 +158,6 @@ if __name__ == "__main__":
     # random()
     # weighted_random()
 
-    # hc()
+    hc()
 
-    hc_iterations()
+    hc_cost_for_each_iteration()
