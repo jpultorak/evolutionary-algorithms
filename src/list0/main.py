@@ -1,7 +1,9 @@
 from timeit import default_timer as timer
 
 import matplotlib.pyplot as plt
+import numpy as np
 
+from list0.algorithms.hill_climb2 import hill_climb2
 from list0.algorithms.random_tours import random_path, weighted_random_path
 from list0.eval import generate, generate_hc
 from list0.read_datasets import read_dataset
@@ -10,7 +12,7 @@ from list0.visualization import draw_coords_tour
 DATASET = "berlin52"
 OPT_PATH_LENGTH = 7542
 HC_N, HC_M, HC_FIRST_CHOICE = 100, 2, False
-RANDOM_N = 100
+RANDOM_N = 1000
 
 
 def random():
@@ -59,24 +61,29 @@ def hc():
     )
     hc_end = timer()
 
-    print(f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE})")
+    print(f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}")
     print(f"Execution time: {hc_end - hc_start}")
     print(f"Iterations {iterations}")
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
     print()
 
-    plot_bins(bins, f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE})")
+    plot_bins(bins, f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE}")
+    plot_iterations(
+        iterations,
+        title=f"Iterations for hill climb N={HC_N},"
+        f" M={HC_M}, first_choice={HC_FIRST_CHOICE}",
+    )
 
 
-# def hc_iterations():
-#     """
-#     How does the cost change in consecutive iterations?
-#     """
-#     _, costs = hill_climb(g, m=HC_M, first_choice=False)
-#     print(f"COST | DIFF\n0: {costs[0]}, 0")
-#     for i in range(1, len(costs)):
-#         print(f"{i}: {costs[i]}, {costs[i - 1] - costs[i]}")
+def hc_iterations():
+    """
+    How does the cost change in consecutive iterations?
+    """
+    _, costs = hill_climb2(dist=dist, first_choice=HC_FIRST_CHOICE)
+    print(f"COST | DIFF\n0: {costs[0]}, 0")
+    for i in range(1, len(costs)):
+        print(f"{i}: {costs[i]}, {costs[i - 1] - costs[i]}")
 
 
 def draw_tours():
@@ -101,14 +108,27 @@ def plot_bins(bins, title):
     plt.show()
 
 
+def plot_iterations(iterations, title):
+    x = np.arange(1, len(iterations) + 1)
+    plt.figure(figsize=(10, 5))
+    plt.plot(x, iterations, marker=".")
+
+    plt.title(title)
+    plt.xlabel("run #")
+    plt.ylabel("iterations")
+
+    plt.grid(True, linestyle="--", alpha=0.4)
+    plt.show()
+
+
 if __name__ == "__main__":
     print(f"TSP for {DATASET}\nLength of the optimal cycle: {OPT_PATH_LENGTH}\n")
     nodes, coords, dist, opt_path = read_dataset(DATASET)
 
     # draw_tours()
 
-    random()
-    weighted_random()
+    # random()
+    # weighted_random()
 
     hc()
 
