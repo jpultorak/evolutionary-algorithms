@@ -1,5 +1,7 @@
 from timeit import default_timer as timer
 
+import matplotlib.pyplot as plt
+
 from list0.algorithms.random_tours import random_path, weighted_random_path
 from list0.eval import generate, generate_hc
 from list0.read_datasets import read_dataset
@@ -7,7 +9,7 @@ from list0.visualization import draw_coords_tour
 
 DATASET = "berlin52"
 OPT_PATH_LENGTH = 7542
-HC_N, HC_M, HC_FIRST_CHOICE = 10, 2, True
+HC_N, HC_M, HC_FIRST_CHOICE = 100, 2, False
 RANDOM_N = 100
 
 
@@ -24,11 +26,16 @@ def random():
     print(f"Best: {best}\nWorst:{worst}")
     print()
 
+    plot_bins(bins, f"Uniform random tours (N={RANDOM_N})")
+
 
 def weighted_random():
     start = timer()
     bins, best, worst = generate(
-        dist=dist, generate_path=weighted_random_path, opt_cost=OPT_PATH_LENGTH, n=100
+        dist=dist,
+        generate_path=weighted_random_path,
+        opt_cost=OPT_PATH_LENGTH,
+        n=RANDOM_N,
     )
     end = timer()
 
@@ -37,6 +44,8 @@ def weighted_random():
     print(bins)
     print(f"Best: {best}\nWorst:{worst}")
     print()
+
+    plot_bins(bins, f"Weighted random tours (N={RANDOM_N})")
 
 
 def hc():
@@ -57,6 +66,8 @@ def hc():
     print(f"Best: {best}\nWorst:{worst}")
     print()
 
+    plot_bins(bins, f"Hill climb N={HC_N}, M={HC_M}, first_choice={HC_FIRST_CHOICE})")
+
 
 # def hc_iterations():
 #     """
@@ -75,9 +86,19 @@ def draw_tours():
         dist=dist,
     )
     draw_coords_tour(coords, [random_tour])
-    #
-    # hc_tour = hill_climb(g, m=HC_M, first_choice=False)[0]
-    # draw(g, [hc_tour])
+
+
+def plot_bins(bins, title):
+    xs = [x for x, _ in bins]
+    ys = [y for _, y in bins]
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(xs, ys, width=2)
+    plt.title(title)
+    plt.xlabel("% over optimal (rounded to 10%)")
+    plt.ylabel("count")
+    plt.xticks(xs)
+    plt.show()
 
 
 if __name__ == "__main__":
