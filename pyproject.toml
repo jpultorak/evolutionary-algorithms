@@ -1,0 +1,32 @@
+[project]
+name = "evolutionary-algorithms"
+version = "0.1.0"
+description = "25/26 University of Wroclaw class"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.3",
+    "tsplib95>=0.7.1",
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "ruff>=0.14.0",
+]
+
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.format]
+
+
+[tool.ruff.lint]
+select = ["E", "F", "UP", "B", "SIM", "I"]

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: evolutionary-algorithms
+Version: 0.1.0
+Summary: 25/26 University of Wroclaw class
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib>=3.10.7
+Requires-Dist: tsplib95>=0.7.1
+
+# 2025/2026 **Evolutionary algorithms** class
+## University of Wroclaw 
