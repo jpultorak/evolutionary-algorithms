@@ -27,6 +27,11 @@ def f_deceptive_one_max(x: np.ndarray):
     return ones_count
 
 
+def opt_k_deceptive(d: int, k: int = DECEPTIVE_K) -> int:
+    blocks, tail = divmod(d, k)
+    return blocks * (k + 1) + ((tail + 1) if tail > 0 else 0)
+
+
 def f_k_deceptive_one_max(x: np.ndarray):
     k = DECEPTIVE_K
     d = len(x)
