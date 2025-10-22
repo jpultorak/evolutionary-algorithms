@@ -5,7 +5,7 @@ from list1.algorithms.pbil import pbil
 DECEPTIVE_K = 3
 
 INSTANCE_LENGTH = 10
-POP_SIZE = 1
+POP_SIZE = 10
 LEARN_RATE = 0.1
 MUT_PROB = 0.02
 MUT_SHIFT = 0.05
@@ -46,11 +46,7 @@ def f_k_deceptive_one_max(x: np.ndarray):
 
 
 def one_max():
-    pass
-
-
-def main():
-    prob1_vector = pbil(
+    prob_vector = pbil(
         d=INSTANCE_LENGTH,
         eval_f=f_one_max,
         pop_size=POP_SIZE,
@@ -61,9 +57,46 @@ def main():
         rng=rng,
     )
 
-    print(prob1_vector)
-    # print(prob2_vector)
-    # print(prob3_vector)
+    print(prob_vector)
+    print()
+
+
+def deceptive_one_max():
+    prob_vector = pbil(
+        d=INSTANCE_LENGTH,
+        eval_f=f_deceptive_one_max,
+        pop_size=POP_SIZE,
+        learn_rate=LEARN_RATE,
+        mut_prob=MUT_PROB,
+        mut_shift=MUT_SHIFT,
+        max_iter=MAX_ITER,
+        rng=rng,
+    )
+
+    print(prob_vector)
+    print()
+
+
+def k_deceptive_one_max():
+    prob_vector = pbil(
+        d=INSTANCE_LENGTH,
+        eval_f=f_k_deceptive_one_max,
+        pop_size=POP_SIZE,
+        learn_rate=LEARN_RATE,
+        mut_prob=MUT_PROB,
+        mut_shift=MUT_SHIFT,
+        max_iter=MAX_ITER,
+        rng=rng,
+    )
+
+    print(prob_vector)
+    print()
+
+
+def main():
+    one_max()
+    deceptive_one_max()
+    k_deceptive_one_max()
 
 
 if __name__ == "__main__":
