@@ -115,8 +115,8 @@ def print_prob_vector(p, decimals=5):
 
 def main():
     # one_max()
-    # deceptive_one_max()
-    k_deceptive_one_max()
+    deceptive_one_max()
+    # k_deceptive_one_max()
 
 
 if __name__ == "__main__":
