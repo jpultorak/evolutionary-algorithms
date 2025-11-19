@@ -86,7 +86,7 @@ class ConstrainedBenchmark:
 def make_penalty_objective(
     problem: ConstrainedBenchmark,
 ):
-    def penalized(x: np.ndarray) -> float:
+    def penalized(x: np.ndarray):
         x_arr = np.asarray(x)
         value = problem.f_objective(x_arr)
         penalty = 0.0
@@ -174,10 +174,100 @@ def make_g3() -> Benchmark:
     return constrained_to_unconstrained(constrained)
 
 
+def make_g6() -> Benchmark:
+    def f_min(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return (x1 - 10.0) ** 3 + (x2 - 20.0) ** 3
+
+    def g1(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return (x1 - 5.0) ** 2 + (x2 - 5.0) ** 2 - 100.0
+
+    def g2(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return -((x1 - 6.0) ** 2 + (x2 - 5.0) ** 2) + 82.81
+
+    optimum_min = -6961.81388
+
+    low = np.array([13.0, 0.0], dtype=float)
+    high = np.array([100.0, 100.0], dtype=float)
+
+    constrained = ConstrainedBenchmark(
+        name="G6",
+        f_objective=f_min,
+        constraints_ineq=[g1, g2],
+        bounds=(low, high),
+        optimum=optimum_min,
+        dim=2,
+    )
+    return constrained_to_unconstrained(constrained)
+
+
+def make_g8() -> Benchmark:
+    def f_min(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        num = np.sin(2.0 * np.pi * x1) ** 3 * np.sin(2.0 * np.pi * x2)
+        denom = x1**3 * (x1 + x2)
+        if abs(denom) < 1e-9:
+            return np.inf
+        value = num / denom
+        return -value
+
+    def g1(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return x1**2 - x2 + 1.0
+
+    def g2(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return 1.0 - x1 + (x2 - 4.0) ** 2
+
+    optimum_min = -0.095825
+
+    constrained = ConstrainedBenchmark(
+        name="G8",
+        f_objective=f_min,
+        constraints_ineq=[g1, g2],
+        bounds=(0.0, 10.0),
+        optimum=optimum_min,
+        dim=2,
+    )
+    return constrained_to_unconstrained(constrained)
+
+
+def make_g11() -> Benchmark:
+    def f_min(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return x1**2 + (x2 - 1.0) ** 2
+
+    def g1(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return x2 - x1**2
+
+    def g2(x: np.ndarray):
+        x1, x2 = x[0], x[1]
+        return -(x2 - x1**2)
+
+    optimum_min = 0.75
+
+    constrained = ConstrainedBenchmark(
+        name="G11",
+        f_objective=f_min,
+        constraints_ineq=[g1, g2],
+        bounds=(-1.0, 1.0),
+        optimum=optimum_min,
+        dim=2,
+    )
+    return constrained_to_unconstrained(constrained)
+
+
 UNCONSTRAINED_BENCHMARKS = {
     "G2": make_g2(),
-    # "G3": make_g3(),
+    "G3": make_g3(),
+    "G6": make_g6(),
+    "G8": make_g8(),
+    "G11": make_g11(),
 }
+
 
 if __name__ == "__main__":
     g3_f = UNCONSTRAINED_BENCHMARKS["G3"].f_objective
