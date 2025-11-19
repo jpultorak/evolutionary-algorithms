@@ -94,7 +94,7 @@ def make_penalty_objective(
             v = g(x_arr)
             if v > 1e-9:
                 penalty += v * v
-        return value + 1e6 * penalty
+        return value + 1e9 * penalty
 
     return penalized
 
@@ -110,6 +110,44 @@ def constrained_to_unconstrained(
         optimum=problem.optimum,
         dim=problem.dim,
     )
+
+
+def make_g2() -> Benchmark:
+    def f_min(x: np.ndarray):
+        n = x.size
+
+        cos_x = np.cos(x)
+        sum_cos4 = np.sum(cos_x**4)
+        prod_cos2 = np.prod(cos_x**2)
+
+        numerator = sum_cos4 - 2.0 * prod_cos2
+        weights = np.arange(1, n + 1, dtype=float)
+        denom = np.sqrt(np.sum(weights * x**2))
+
+        if abs(denom) < 1e-9:
+            return np.inf
+
+        value = abs(numerator / denom)
+        return -value
+
+    def g1(x: np.ndarray):
+        return -np.prod(x) + 0.75
+
+    def g2(x: np.ndarray):
+        n = x.size
+        return np.sum(x) - 7.5 * n
+
+    optimum_min = -0.803619
+
+    constrained = ConstrainedBenchmark(
+        name="G2",
+        f_objective=f_min,
+        constraints_ineq=[g1, g2],
+        bounds=(0.0, 10.0),
+        optimum=optimum_min,
+        dim=20,
+    )
+    return constrained_to_unconstrained(constrained)
 
 
 def make_g3() -> Benchmark:
@@ -137,7 +175,8 @@ def make_g3() -> Benchmark:
 
 
 UNCONSTRAINED_BENCHMARKS = {
-    "G3": make_g3(),
+    "G2": make_g2(),
+    # "G3": make_g3(),
 }
 
 if __name__ == "__main__":
