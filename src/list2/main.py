@@ -8,15 +8,15 @@ def main():
     rng = np.random.default_rng(42)
     dim = 30
     runs = 5
-    iters = 5000
+    iters = 10000
 
     for plus in (True, False):
         scheme = "ES(μ+λ)" if plus else "ES(μ,λ)"
         print(f"\n=== {scheme} ===")
 
-        for _, bench in BENCHMARKS.items():
+        for _, benchmark in BENCHMARKS.items():
             res = run_es(
-                benchmark=bench,
+                benchmark=benchmark,
                 rng=rng,
                 dim=dim,
                 runs=runs,
@@ -27,10 +27,11 @@ def main():
             )
 
             print(
-                f"{bench.name:10s} | "
+                f"{benchmark.name} | "
+                f"all runs best={res['all_runs_best']:.6f} | "
                 f"mean={res['mean_best']:.6f} | "
                 f"std={res['std_best']:.6f} | "
-                f"optimum={bench.optimum}"
+                f"optimum={benchmark.optimum}"
             )
 
 

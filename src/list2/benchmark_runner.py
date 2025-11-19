@@ -50,5 +50,6 @@ def run_es(
         "best_values": best_values,
         "mean_best": float(best_values.mean()),
         "std_best": float(best_values.std()),
+        "all_runs_best": np.min(best_values),
         "histories": histories,
     }
