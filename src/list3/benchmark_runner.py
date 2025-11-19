@@ -1,7 +1,7 @@
 import numpy as np
 
-from list2.benchmark import Benchmark
-from list2.evolutionary_strategy import es
+from list3.benchmark import Benchmark
+from list3.evolutionary_strategy import es
 
 
 def run_es(

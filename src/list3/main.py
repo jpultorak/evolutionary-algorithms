@@ -1,7 +1,7 @@
 import numpy as np
 
-from list2.benchmark import UNCONSTRAINED_BENCHMARKS
-from list2.benchmark_runner import run_es
+from list3.benchmark import UNCONSTRAINED_BENCHMARKS
+from list3.benchmark_runner import run_es
 
 
 def run_benchmarks(rng, benchmarks):
