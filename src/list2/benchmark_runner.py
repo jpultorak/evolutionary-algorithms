@@ -7,16 +7,17 @@ from list2.evolutionary_strategy import es
 def run_es(
     benchmark: Benchmark,
     rng,
-    dim,
     runs=10,
-    plus=True,
-    mu=15,
-    lambda_=100,
-    iters=1000,
-    tau=None,
-    tau0=None,
+    plus: bool = True,
+    mu: int = 15,
+    lambda_: int = 100,
+    iters: int = 1000,
+    dim: int | None = None,
+    tau: float | None = None,
+    tau0: float | None = None,
 ):
     best_values = []
+    best_x = []
     histories = []
 
     for _ in range(runs):

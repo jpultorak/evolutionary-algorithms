@@ -28,16 +28,16 @@ def mutate(pop_x, sigma, tau, tau0, rng, min_sigma=1e-8):
 
 
 def es(
-    f_objective,
-    dim,
+    f_objective: callable,
+    dim: int,
     rng,
-    mu=15,
-    lambda_=100,
-    bounds=(-5.0, 5.0),
-    iters=1000,
-    plus=True,
-    tau=None,
-    tau0=None,
+    mu: int = 15,
+    lambda_: int = 100,
+    bounds: tuple = (-5.0, 5.0),
+    iters: int = 1000,
+    plus: bool = True,
+    tau: float | None = None,
+    tau0: float | None = None,
 ):
     if tau is None:
         tau = 1.0 / np.sqrt(2.0 * np.sqrt(dim))
