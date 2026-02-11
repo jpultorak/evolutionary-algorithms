@@ -7,7 +7,7 @@ from config import cfg
 from models.model import MLPPolicy
 
 
-def load_weights(filename="checkpoints/weights_gen_2950.pkl"):
+def load_weights(filename):
     if not os.path.exists(filename):
         raise FileNotFoundError(f"Weights file not found: {filename}")
 
@@ -55,4 +55,6 @@ def visualization(weights_path):
 
 
 if __name__ == "__main__":
-    visualization()
+    # filename = "checkpoints/weights-2950.pkl"
+    filename = "winner-normal.pkl"
+    visualization(filename)
