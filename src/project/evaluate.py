@@ -13,20 +13,20 @@ def run_single_episode(env, weights):
 
     prev_action = np.zeros(cfg.output_size)
 
-    alpha = cfg.action_smoothing
-
     terminated = False
     truncated = False
 
     while not (terminated or truncated):
         # 1. Normalize
-        norm_obs = obs / 5.0
+        norm_obs = obs / cfg.normalization
 
         # 2. MLP Output
         raw_action = policy.get_action(norm_obs, weights)
 
         # 3. Smoothing
-        action = (alpha * prev_action) + ((1.0 - alpha) * raw_action)
+        action = (cfg.action_smoothing * prev_action) + (
+            (1.0 - cfg.action_smoothing) * raw_action
+        )
         prev_action = action
 
         # 4. Step
@@ -36,7 +36,7 @@ def run_single_episode(env, weights):
         step_count += 1
 
         # 5. Early Termination
-        if total_reward < -90 and step_count < 50:
+        if cfg.early_termination and total_reward < -90 and step_count < 50:
             return total_reward - 50
 
     return total_reward
@@ -46,7 +46,7 @@ def evaluate(weights):
     env = gym.make(cfg.env_name, hardcore=cfg.hardcore)
 
     rewards = []
-    for _ in range(cfg.total_eval):
+    for _ in range(cfg.total_rollouts):
         r = run_single_episode(env, weights)
         rewards.append(r)
 

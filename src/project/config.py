@@ -18,9 +18,11 @@ class Config:
     sigma_init: float = 0.5
     max_generations: int = 3000
 
-    # Evaluation
-    total_eval: int = 3
-    action_smoothing: float = 0.8
+    # Evaluation & optimization
+    total_rollouts: int = 3
+    action_smoothing: float = 0.8  # 0.0 to turn off
+    normalization: float = 5.0  # 1.0 to turn off
+    early_termination: bool = True
 
     # Resources
     n_workers: int = 8

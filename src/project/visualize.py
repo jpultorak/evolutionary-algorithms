@@ -32,19 +32,20 @@ def visualization(weights_path):
         truncated = False
 
         prev_action = np.zeros(cfg.output_size)
-        alpha = cfg.action_smoothing
 
         while not (terminated or truncated):
             env.render()
 
             # 1. Normalize
-            norm_obs = obs / 5.0
+            norm_obs = obs / cfg.normalization
 
             # 2. MLP output
             raw_action = policy.get_action(norm_obs, weights)
 
             # 3. Smoothing
-            action = (alpha * prev_action) + ((1.0 - alpha) * raw_action)
+            action = (cfg.action_smoothing * prev_action) + (
+                (1.0 - cfg.action_smoothing) * raw_action
+            )
             prev_action = action
 
             # 4. Step
