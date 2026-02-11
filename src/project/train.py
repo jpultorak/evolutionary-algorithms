@@ -10,7 +10,7 @@ from evaluate import evaluate
 from models.model import MLPPolicy
 
 
-def save_checkpoint(es, generation, checkpoint_dir="checkpoints"):
+def save_checkpoint(es, generation, checkpoint_dir):
     os.makedirs(checkpoint_dir, exist_ok=True)
     weights_path = os.path.join(checkpoint_dir, f"weights_gen_{generation}.pkl")
     with open(weights_path, "wb") as f:
@@ -23,11 +23,11 @@ def save_checkpoint(es, generation, checkpoint_dir="checkpoints"):
     print(f"Checkpoint saved: Generation {generation}")
 
 
-def main():
+def main(log_file, checkpoint_dir):
     print(f"Starting trainging for {cfg.env_name}")
+    print("CONFIG:", cfg)
     print(50 * "-")
 
-    log_file = "training_log.csv"
     if not os.path.exists(log_file):
         with open(log_file, "w") as f:
             f.write("generation,min_fitness,avg_fitness,max_fitness\n")
@@ -70,16 +70,16 @@ def main():
 
             # Checkpoint
             if gen % 50 == 0:
-                save_checkpoint(es, gen)
+                save_checkpoint(es, gen, checkpoint_dir)
 
             # Termination condition
             if max_reward > 300:
                 print(f"\n Solved in generation {gen}")
-                save_checkpoint(es, gen)
+                save_checkpoint(es, gen, checkpoint_dir)
                 break
 
             if gen >= cfg.max_generations:
-                save_checkpoint(es, gen)
+                save_checkpoint(es, gen, checkpoint_dir)
                 print("\nMax generations reached.")
                 break
 
@@ -88,5 +88,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # multiprocessing.freeze_support()
-    main()
+    checkpoint_dir = "checkpoints_no_opt"
+    log_file = "training_no_opt.csv"
+    main(log_file, checkpoint_dir)

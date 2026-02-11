@@ -56,6 +56,6 @@ def visualization(weights_path):
 
 
 if __name__ == "__main__":
-    # filename = "checkpoints/weights-2950.pkl"
-    filename = "winner-normal.pkl"
+    filename = "checkpoints_no_early_termination/weights_gen_250.pkl"
+    # filename = "winner-normal.pkl"
     visualization(filename)

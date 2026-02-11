@@ -16,11 +16,11 @@ class Config:
     # CMA-ES
     pop_size: int = 96
     sigma_init: float = 0.5
-    max_generations: int = 3000
+    max_generations: int = 1000
 
     # Evaluation & optimization
     total_rollouts: int = 3
-    action_smoothing: float = 0.8  # 0.0 to turn off
+    action_smoothing: float = 0.0  # 0.0 to turn off
     normalization: float = 5.0  # 1.0 to turn off
     early_termination: bool = True
 
